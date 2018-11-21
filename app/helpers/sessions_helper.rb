@@ -19,7 +19,7 @@ module SessionsHelper
       @current_user ||= User.find_by(id: session[:user_id])
     elsif(user_id = cookies.signed[:user_id])
       user = User.find_by(id:user_id)
-      if user && user.authenticate?(cookies[:remember_token])
+      if user && user.authenticate?(:remember,cookies[:remember_token])
         log_in user
         @current_user = user
       end
@@ -51,5 +51,5 @@ module SessionsHelper
   # アクセスしようとしたURLを記憶する
   def store_location
     session[:forwarding_url] = request.original_url if request.get?
-  end 
+  end
 end
